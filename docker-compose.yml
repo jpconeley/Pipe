@@ -1,5 +1,9 @@
 # Local development stack. `docker compose up -d --build` runs the database,
-# API (http://localhost:8000) and web app (http://localhost:3000) with demo data.
+# API (http://localhost:8010) and web app (http://localhost:3010) with demo data.
+#
+# Ports are offset from the usual 3000/8000/5432 (3010/8010/5433) so this can
+# run alongside another Docker Compose project (e.g. Chorizo/LASO) that uses
+# the defaults, without a port conflict.
 services:
   db:
     image: postgres:16
@@ -8,7 +12,7 @@ services:
       POSTGRES_PASSWORD: pvf
       POSTGRES_DB: pvf
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -20,10 +24,10 @@ services:
     build: ./backend
     environment:
       PVF_DATABASE_URL: postgresql+psycopg://pvf:pvf@db:5432/pvf
-      PVF_WEB_URL: http://localhost:3000
+      PVF_WEB_URL: http://localhost:3010
       PVF_SEED_DEMO: "1"
     ports:
-      - "8000:8000"
+      - "8010:8000"
     depends_on:
       db:
         condition: service_healthy
@@ -33,7 +37,7 @@ services:
     environment:
       PVF_API_URL: http://api:8000
     ports:
-      - "3000:3000"
+      - "3010:3000"
     depends_on:
       - api
 

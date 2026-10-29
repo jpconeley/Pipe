@@ -33,8 +33,11 @@ docker compose up -d --build
 ```
 
 Then open:
-- **http://localhost:3000** — the web app
-- **http://localhost:8000/docs** — the API's interactive docs (Swagger UI)
+- **http://localhost:3010** — the web app
+- **http://localhost:8010/docs** — the API's interactive docs (Swagger UI)
+
+(Ports are offset from the usual 3000/8000/5432 so this can run alongside
+another Compose project, like Chorizo/LASO, that uses the defaults.)
 
 First boot runs database migrations and seeds reference data (Gulf Coast yards,
 grade substitution rules) plus demo asks, bids, and ~6 months of synthetic trade
@@ -51,8 +54,8 @@ make setup     # install backend + web dependencies
 make db        # start just Postgres via Docker
 make migrate
 make seed
-make api       # :8000, separate terminal
-make web       # :3000, separate terminal
+make api       # :8000, separate terminal (stop any other project using :8000 first)
+make web       # :3000, separate terminal (stop any other project using :3000 first)
 ```
 
 Run `make test` to lint and test the backend, and lint/build the frontend.
